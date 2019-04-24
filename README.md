@@ -1,24 +1,61 @@
-# README
+## a) Niveau facile
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Quel est le nombre total d'objets Album contenus dans la base (sans regarder les id bien sûr) ?
+--> Album.count
 
-Things you may want to cover:
+# Qui est l'auteur de la chanson "White Room" ?
+--> 
 
-* Ruby version
+# Quelle chanson dure exactement 188133 milliseconds ?
+--> Track.find_by(duration: 188133).title
 
-* System dependencies
+# Quel groupe a sorti l'album "Use Your Illusion II" ?
+--> ALbum.find_by(title: "Use Your Illusion II").artist
 
-* Configuration
 
-* Database creation
+## b) Niveau Moyen
 
-* Database initialization
+# Combien y a t'il d'albums dont le titre contient "Great" ? (indice)
+--> Album.where("title LIKE ?", "%great%").count
 
-* How to run the test suite
+# Supprime tous les albums dont le nom contient "music".
+--> Album.where("title LIKE ?", "%music%").destroy_all
 
-* Services (job queues, cache servers, search engines, etc.)
+# Combien y a t'il d'albums écrits par AC/DC ?
+--> Album.where(artist: "AC/DC").count
 
-* Deployment instructions
+# Combien de chanson durent exactement 158589 millisecondes ?
+--> Track.where(duration: 158589).count
 
-* ...
+
+## c) Niveau Difficile
+
+# puts en console tous les titres de AC/DC.
+--> Track.where(artist: "AC/DC").each do |t|
+      puts t.title
+    end
+
+# puts en console tous les titres de l'album "Let There Be Rock".
+--> Track.where(album: "Let There Be Rock").each.each do |t|
+      puts t.title
+    end
+
+# Calcule le prix total de cet album ainsi que sa durée totale.
+--> prix = 0
+    durée = 0
+    Track.where(album: "Let There Be Rock").each.each do |t|
+      prix = prix + t.price
+      durée = durée + t.duration
+    end
+
+# Calcule le coût de l'intégralité de la discographie de "Deep Purple".
+--> prix = 0
+    
+    Track.where(artist: "Deep Purple").each do |t|
+      prix = prix + t.price
+    end
+
+# Modifie (via une boucle) tous les titres de "Eric Clapton" afin qu'ils soient affichés avec "Britney Spears" en artist.
+--> Track.where(artist: "Eric Clapton").each do |t|
+      t.update(artist: "Britney Spears")
+    end
